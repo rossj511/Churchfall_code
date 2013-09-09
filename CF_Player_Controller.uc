@@ -11,7 +11,28 @@ event Possess(Pawn inPawn, bool bVehicleTransition)
 {
 	super.Possess(inPawn, bVehicleTransition);
 }
+function Spawn_Block()
+{
+    local CF_Spawnable_Mesh_Test mesh;
+    local Vector mesh_location;
 
+    // position 100 units infront of pawn
+    mesh_location = Pawn.Location + Vector(Pawn.Rotation) * 100.0;
+
+    // spawn a dynamic static mesh actor
+    mesh = Spawn( class'CF_Spawnable_Mesh_Test', , , mesh_location );
+
+    if ( mesh == None ) return;
+
+    // use generic cube mesh, half size
+    //A.StaticMeshComponent.SetStaticMesh( StaticMesh'EngineMeshes.Cube' );
+     mesh.SetDrawScale( 0.5 );
+
+    // drop to floor
+    mesh.SetPhysics( PHYS_None );
+    // set it to self-destruct after 3 seconds
+    mesh.SetTimer( 3.0, false, 'Destroy_Mesh' );
+}
 //Gets the triggers that the player uses
 //Top part is an override of PlayerController class GetTriggerUseList function
 function GetTriggerUseList(float interactDistanceToCheck, float crosshairDist, float minDot, bool bUsuableOnly, out array<trigger> out_useList)
@@ -71,6 +92,14 @@ function GetTriggerUseList(float interactDistanceToCheck, float crosshairDist, f
                 out_useList[out_useList.Length] = checkTrigger;
             }
 			if (CF_Inventory_Test_Trigger(checkTrigger) != None && (out_useList.Length == 0 || out_useList[out_useList.Length-1] != checkTrigger))
+            {
+                out_useList[out_useList.Length] = checkTrigger;
+            }
+			if (CF_placeable_trigger_test(checkTrigger) != None && (out_useList.Length == 0 || out_useList[out_useList.Length-1] != checkTrigger))
+            {
+                out_useList[out_useList.Length] = checkTrigger;
+            }
+			if (CF_placeable_trigger_test_location(checkTrigger) != None && (out_useList.Length == 0 || out_useList[out_useList.Length-1] != checkTrigger))
             {
                 out_useList[out_useList.Length] = checkTrigger;
             }
