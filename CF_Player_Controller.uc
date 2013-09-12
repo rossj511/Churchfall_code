@@ -110,6 +110,8 @@ function GetTriggerUseList(float interactDistanceToCheck, float crosshairDist, f
 		}
     }
 }
+
 DefaultProperties
 {
+	InputClass=class'Churchfall.CF_Player_Input'
 }
