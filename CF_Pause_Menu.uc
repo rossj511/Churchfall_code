@@ -20,8 +20,8 @@ function bool Start(optional bool StartPaused = false)
 //Ends movie
 function End()
 {
-	bIsOpen = false;
 	Close();
+	bIsOpen = false;
 }
 function inv_menu_open()
 {

@@ -88,6 +88,8 @@ function bool UsedBy(Pawn User)
 	{
 		CF_Pawn.has_test_item = true;
 		self.Destroy();
+		CF_Pawn.bIs_Highlightable_Actor = false;
+		CF_Pawn.change_crosshair = false;
 		return true;
 	}
 	return used;
