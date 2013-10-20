@@ -5,6 +5,7 @@ DangerZone Games: James Ross (jross.rpi@gmail.com)
 Date : 09/08/2013
 All code (c)2013 DangerZone Games inc. all rights reserved
 */  
+
 //Initial call
 event PostLogin( PlayerController CF_PC )
 { 
@@ -14,7 +15,6 @@ event PostLogin( PlayerController CF_PC )
 	local CF_save_info save_info;
 	local vector vec;
 	super.PostLogin( CF_PC );
-
 	Player_Location_Actor = GetALocalPlayerController().Pawn;
 	CF_pawn = CF_Player_Pawn(Player_Location_Actor);
 	url = WorldInfo.GetLocalURL();
@@ -28,6 +28,7 @@ event PostLogin( PlayerController CF_PC )
 			{
 				save_info = new class'CF_save_info';
 			}
+
 			vec.x = save_info.loc_x;
 			vec.y = save_info.loc_y;
 			vec.z = save_info.loc_z;

@@ -5,6 +5,22 @@ DangerZone Games: James Ross (jross.rpi@gmail.com)
 Date : 09/08/2013
 All code (c)2013 DangerZone Games inc. all rights reserved
 */  
+
+/*Design Stuff
+ * 
+ * Spawn a candle(inventory of them in pause menu)
+ * Every candle is a trigger that the player presses use to pick up 
+ * new exec function to place a candle
+ * the flashlight function turns on/off the latern....
+ * Light Dims over time(SetTimer and lattern toggle flag)
+ * Enemies that respond to light
+ * 
+ * 
+ * Player picks up candle and place a candle
+ * Lattern = long life
+ * Ground = limited
+ * 
+ */
 var CF_Player_input CF_Input;
 var bool bCaptureForBind;
 var name CapturedKey;
@@ -1486,7 +1502,7 @@ function OpenBindKeyMovie(string bind_name)
 	}
 	else if(bind_name == "GBA_flashlight")
 	{
-		bind_name = "Flashlight";
+		bind_name = "Lantern On/Off";
 	}
 	else if(bind_name == "GBA_journal")
 	{
@@ -2292,7 +2308,7 @@ function FlashlightClik()
 //Starts game
 function Play_game()
 {
-	ConsoleCommand("open test");
+	ConsoleCommand("open test_dark");
 }
 //Quits game
 function Quit_game()

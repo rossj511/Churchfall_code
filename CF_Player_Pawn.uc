@@ -1,4 +1,4 @@
-class CF_Player_Pawn extends Pawn;
+class CF_Player_Pawn extends UTPawn;
 
 /*
 Player Pawn class for Churchfall(working title)
@@ -16,6 +16,7 @@ var CF_Crosshair crosshair_movie;
 var GFxObject crosshair_frame;
 var CF_Journal_Sound_Test journal_test;
 var SoundCue test;
+//var SpotLightComponent LightAttachment;
 
 //Starts a timer to check if the puzzle is completed and opens the crosshair movie
 simulated function PostBeginPlay()
@@ -24,7 +25,14 @@ simulated function PostBeginPlay()
 	local CF_save_info save_info;
 	local vector vec;
 	super.PostBeginPlay();
-	Super.PostBeginPlay();
+	/*LightAttachment = new(self) class'SpotLightComponent';
+	LightAttachment.SetLightProperties( 2.0 );
+	LightAttachment.CastDynamicShadows = false;
+	LightAttachment.ShadowFilterQuality = SFQ_High;
+	LightAttachment.ShadowProjectionTechnique = ShadowProjTech_BPCF_High;
+	LightAttachment.SetEnabled( true );
+	self.AttachComponent( LightAttachment );*/
+
 	SetTimer(0.5,true,'puzzle_check');
 	if(game_start == false)
 	{
@@ -74,6 +82,7 @@ function journal_start()
 	PlaySound(test);
 
 }
+
 //Checks to see if the test puzzle is completed by checking the two test puzzle trigger actors
 function puzzle_check()
 {
@@ -113,8 +122,23 @@ function puzzle_check()
 event Tick(float DeltaTime)
 {
 	local CF_Player_Controller CF_Controller;
-    super.Tick(DeltaTime);
+	local int i;
+	super.Tick(DeltaTime);
 	CF_Controller= CF_Player_Controller(self.Controller);
+	if(CF_Controller.candles.Length!=0)
+	{
+		for(i=0;i < CF_Controller.candles.Length;i++)
+		{
+			if(CF_Controller.candles[i].dead==true)
+			{
+				CF_Controller.removeCandle(true);
+				CF_Controller.candles.Remove(i,1);
+			}
+		}
+	}
+
+   
+
 
 		if(change_crosshair == true&&CF_Controller.close_crosshair==false)
 		{
@@ -133,17 +157,17 @@ event Tick(float DeltaTime)
 			crosshair_frame.GotoAndStopI(3);
 		}
 		
+		
 }
 DefaultProperties
 {
 	// Create a light environment for the pawn
-	Begin Object Class=DynamicLightEnvironmentComponent Name=MyLightEnvironment
+	Begin Object Class=DynamicLightEnvironmentComponent Name=PawnLightEnvironment
 		bSynthesizeSHLight=true
 		bIsCharacterLightEnvironment=true
 		bUseBooleanEnvironmentShadowing=false
 	End Object
-	Components.Add(MyLightEnvironment)
-
+	Components.Add(PawnLightEnvironment)
 	bPostRenderifNotVisible = true
 	bIs_Highlightable_Actor = false
 	game_start = false
@@ -152,5 +176,8 @@ DefaultProperties
 	test_puzzle_trigger2_bool=false
 	test_puzzle_completed=false
 	has_test_item=false
+	bCanJump=false
+    InventoryManagerClass=class'Churchfall.CF_Inventory_Manager'
+	
 	test = SoundCue'A_Ambient_Loops.Fire.Fire_TorchAmbient_01_Cue'
 }

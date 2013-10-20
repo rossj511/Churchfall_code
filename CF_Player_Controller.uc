@@ -12,11 +12,153 @@ var bool open_crosshair;
 var bool close_crosshair;
 var CF_Journal_Movie journal_movie;
 var bool pausable;
-exec function Flashlight()
+var CF_Timer timer;
+var CF_Lantern lantern;
+var bool lantern_is_being_used;
+var array<CF_Candle_Attributes> candles; 
+var int num_candles;
+var int burn_number;
+
+/* Controller needs inventory of candle objects
+ * new exec to place candle 
+ * exec to check if can place candle
+ * 
+ * 
+ */
+exec function int LanternToggle()
 {
-	`log("Flashlight");
+	local CF_Player_Pawn CF_Pawn;
+	CF_Pawn =CF_Player_Pawn(self.Pawn);
+
+	if(lantern == none && lantern_is_being_used == false)
+	{
+		lantern = Spawn(class'CF_Lantern');
+		CF_Pawn.InvManager.addInventory(lantern);
+		CF_Pawn.InvManager.bMustHoldWeapon = true;
+		CF_Pawn.InvManager.SetCurrentWeapon(lantern);
+			if(lantern!=none)
+			{
+				lantern.GiveTo(CF_Pawn);
+			}
+		lantern.CreateLight(0.0,4200.0,CF_Pawn);
+		lantern.SetHidden(false);
+		lantern.LanternComponent.PlayAnim('WeaponEquip');
+		lantern_is_being_used = true;
+		lantern.LightAttachment.SetEnabled(false);
+		return 1;
+	}
+	else if(lantern!=none && lantern_is_being_used == false)
+	{
+		lantern.SetHidden(false);
+		lantern.LanternComponent.PlayAnim('WeaponEquip');
+		lantern_is_being_used = true;
+		lantern.LightAttachment.SetEnabled(true);
+		return 1;
+	}
+	else if(lantern!=none && lantern_is_being_used == true)
+	{
+		lantern.LanternComponent.PlayAnim('WeaponPutDown');
+		lantern_is_being_used = false;
+		lantern.DisableLight();
+		return 1;
+	}
+	
 }
 
+exec function int addCandle()
+{
+	/*local int i;
+	for(i=0;i<candles.Length;i++)
+	{
+		`log(candles[i].Life);
+	}*/
+	if(candles.Length == 0 || num_candles== 0)
+	{
+		return 0;
+	}
+	`log(candles[num_candles-1].is_burning);
+	if(lantern!=none && lantern_is_being_used == true && num_candles > 0)
+	{
+		if(lantern.LightAttachment.Brightness <= 0.0)
+		{
+			if(candles[num_candles-1].is_burning == false)
+			{
+			lantern.LightAttachment.SetEnabled(true);
+			lantern.LightAttachment.SetLightProperties(lantern.LightAttachment.Brightness+candles[num_candles-1].Brightness);
+			burn_number = num_candles-1;
+			//SetTimer(1,true,'BurnCandle');
+			candles[num_candles-1].Burn();
+			candles[num_candles-1].is_burning = true;
+			num_candles--;
+			}
+			return 1;
+		}
+		else if(lantern.LightAttachment.Brightness <= 0.6)
+		{
+
+			if(candles[num_candles-1].is_burning == false)
+			{
+			lantern.LightAttachment.SetLightProperties(lantern.LightAttachment.Brightness+candles[num_candles-1].Brightness);
+			burn_number = num_candles-1;
+			//SetTimer(1,true,'BurnCandle');
+			`log("Hit");
+			candles[num_candles-1].Burn();
+			candles[num_candles-1].is_burning = true;
+			num_candles--;
+			`log(num_candles);
+			}
+
+			return 1;
+		}
+		else
+			return 0;
+	}
+	else
+		return 0;
+}
+
+exec function int removeCandle(optional bool fromPawn)
+{
+	
+	if(candles.Length == 0 || num_candles == candles.Length)
+	{
+		return 0;
+	}
+
+	if(lantern!=none && lantern_is_being_used == true)
+	{
+		if(lantern.LightAttachment.Brightness <= 0.1)
+		{
+			lantern.LightAttachment.SetLightProperties(lantern.LightAttachment.Brightness-candles[burn_number].Brightness);
+			if(lantern.LightAttachment.Brightness <= 0.0)
+			{
+				lantern.DisableLight();
+			}
+			if(fromPawn==false)
+			{
+			candles[num_candles].is_burning=false;
+			candles[num_candles].ClearTimer('Burning');
+			num_candles++;
+			}
+			return 1;
+		}
+		else if(lantern.LightAttachment.Brightness > 0.1)
+		{
+			lantern.LightAttachment.SetLightProperties(lantern.LightAttachment.Brightness-candles[burn_number].Brightness);
+			if(fromPawn==false)
+			{
+			candles[num_candles].is_burning=false;
+			candles[num_candles].ClearTimer('Burning');
+			num_candles++;
+			}
+			return 1;
+		}
+		else
+			return 0;
+	}
+	else 
+		return 0;
+}
 exec function Journal()
 {
 	`log("journal");
@@ -40,12 +182,50 @@ exec function Journal()
 	}
 	}
 }
+exec function spawnCandle()
+{
+local Actor Collider;
+local CF_Candle spawn_candle;
+local vector loc;
+
+loc = self.Pawn.Location + Vector(self.Pawn.Rotation)*150;
+
+	if(num_candles > 0)
+	{
+		foreach CollidingActors(class'Actor',Collider,40,loc)
+		{
+			`log("Collision");
+			break;
+		}
+		if(Collider==none)
+		{
+			spawn_candle = Spawn(class'CF_Candle',,,loc);
+			spawn_candle.life=candles[num_candles-1].Life;
+			spawn_candle.brightness=candles[num_candles-1].Brightness;
+			spawn_candle.bPostRenderIfNotVisible=true;
+		}
+		else
+		{
+			`log("Collision cant spawn");
+			//also play movie
+		}
+		if(spawn_candle!=none)
+		{
+			candles.Remove(num_candles-1,1);
+			num_candles--;
+		}
+	}
+}
+
+
 //What the controller starts with
 event Possess(Pawn inPawn, bool bVehicleTransition)
 {
 	local CF_options_save_info options;
     local PostProcessChain Chain;
     local PostProcessEffect Effect;
+	local CF_Candle_Attributes start_candle;
+	local CF_Candle_Attributes start_candle1;
     local int index;
 	//local CF_Player_Pawn CF_Pawn;
 	//local actor Player_location_actor;
@@ -55,7 +235,8 @@ event Possess(Pawn inPawn, bool bVehicleTransition)
 	//Player_location_actor = GetALocalPlayerController().Pawn;
 	//CF_Pawn  = CF-Player_Pawn(Player_Location_Actor);
 	options = class'CF_options_save_info'.static.load_options();
-
+	start_candle = Spawn(class'CF_Candle_Attributes');
+	start_candle1 = Spawn(class'CF_Candle_Attributes');
 		if(options == none)
 		{
 			options = new class'CF_options_save_info';
@@ -63,9 +244,7 @@ event Possess(Pawn inPawn, bool bVehicleTransition)
 
 	ConsoleCommand("setSensitivity"@options.CursorSensitivity);
 	index = options.AAIndex;
-	`log(options.AAIndex);
 	Chain = WorldInfo.WorldPostProcessChain;
-	`log(Chain);
 		if (Chain != None)
 		{
 			foreach Chain.Effects(Effect)
@@ -110,6 +289,8 @@ event Possess(Pawn inPawn, bool bVehicleTransition)
 				}
 			}
 		}
+		candles.AddItem(start_candle);
+		candles.AddItem(start_candle1);
 
 }
 function Spawn_Block()
@@ -208,14 +389,18 @@ function GetTriggerUseList(float interactDistanceToCheck, float crosshairDist, f
             {
                 out_useList[out_useList.Length] = checkTrigger;
             }
+			if (CF_Candle(checkTrigger) != None && (out_useList.Length == 0 || out_useList[out_useList.Length-1] != checkTrigger))
+            {
+                out_useList[out_useList.Length] = checkTrigger;
+            }
 		}
     }
 }
+
 function Log_Call()
 {
-	`log("Called");
+	`log("Hit");
 }
-
 
 function Open_Test_Movie(CF_SeqAct_Flash_Movie_Test movie)
 {
@@ -244,4 +429,6 @@ DefaultProperties
 	open_crosshair=false
 	close_crosshair=false
 	pausable=true;
+	lantern_is_being_used=false;
+	num_candles=2
 }

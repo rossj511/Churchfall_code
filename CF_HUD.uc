@@ -52,13 +52,13 @@ function int TogglePauseMenu(bool flag)
 //Function that allows for drawing to hud and playing of other hud related movies
 function PostRender()
 {
-	local CF_Player_Pawn CF_Pawn;
+	//local CF_Player_Pawn CF_Pawn;
 	//local CF_Player_Controller CF_Controller;
-	local actor Player_Location_Actor;
+	//local actor Player_Location_Actor;
 	super.PostRender();
 
-	Player_Location_Actor = GetALocalPlayerController().Pawn;
-    CF_Pawn = CF_Player_Pawn(Player_Location_Actor);
+	//Player_Location_Actor = GetALocalPlayerController().Pawn;
+    //CF_Pawn = CF_Player_Pawn(Player_Location_Actor);
 	//CF_Controller = CF_Player_Controller(CF_Pawn.Controller);
 
 	if(PauseMenu == none)
@@ -66,11 +66,6 @@ function PostRender()
 		PauseMenu = new class'CF_Pause_Menu';
 	}
 
-	if(CF_Pawn.has_test_item == true && rendered_test_item_text == false)
-	{
-		PauseMenu.pause_item_text_bool = true;
-		rendered_test_item_text = true;
-	}
 }
 
 
