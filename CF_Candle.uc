@@ -1,7 +1,9 @@
-class CF_Candle extends Trigger;
+class CF_Candle extends Trigger
+ClassGroup(CF_Actors);
 
 var bool IsInInteractionRange;
 var() const editconst DynamicLightEnvironmentComponent LightEnvironment;
+var() bool is_lit;
 var StaticMeshComponent trigger_mesh;
 var PointLightComponent point_light;
 var float life;
@@ -12,9 +14,12 @@ simulated function PostBeginPlay()
 {
 	super.PostBeginPlay();
 	point_light = new(self) class 'PointLightComponent';
-	point_light.SetLightProperties(self.brightness);
-	point_light.Radius=200.0;
-	self.AttachComponent(point_light);
+	if(is_lit == true)
+	{
+		point_light.SetLightProperties(self.brightness);
+		point_light.Radius=200.0;
+		self.AttachComponent(point_light);
+	}
 }
 event Tick(float DeltaTime)
 {
@@ -92,13 +97,7 @@ event Touch(Actor Other, PrimitiveComponent OtherComp, Vector HitLocation, Vecto
 //Untouch event removes crosshair highlighting
 event UnTouch(Actor Other)
 {
-	local CF_Player_Pawn CF_Pawn;
-	local actor Player_Location_Actor;
 	super.UnTouch(Other);
-	Player_Location_Actor = GetALocalPlayerController().Pawn;
-    CF_Pawn = CF_Player_Pawn(Player_Location_Actor);
-	CF_Pawn.bIs_Highlightable_Actor = false;
-	CF_Pawn.change_crosshair = false;
 	if (Pawn(Other) != none)
 	{
 		PlayerController(Pawn(Other).Controller).myHUD.RemovePostRenderedActor(self);
@@ -109,28 +108,8 @@ event UnTouch(Actor Other)
 //Also changes object material according to current object rotation
 simulated event PostRenderFor(PlayerController PC, Canvas Canvas, Vector CameraPosition, Vector CameraDir)
 {
-	local CF_Player_Pawn CF_Pawn;
-	local CF_Player_Controller CF_Controller;
-	local actor Player_Location_Actor;
-	local float dot_product;
-	local vector player_rotation;
-	local vector camera_location;
-	local rotator camera_rotation;
+
 	super.PostRenderFor(PC, Canvas, CameraPosition, CameraDir);
-
-	Player_Location_Actor = GetALocalPlayerController().Pawn;
-    CF_Pawn = CF_Player_Pawn(Player_Location_Actor);
-	CF_Controller = CF_Player_Controller(CF_Pawn.Controller);
-	player_rotation = Vector(CF_Pawn.Rotation);
-	dot_product =player_rotation dot (Player_location_actor.Location - self.Location);
-	CF_Controller.GetPlayerViewPoint(camera_location,camera_rotation);
-
-	if(dot_product < 0 && CF_Controller.IsAimingAt( self, 0.98f ))
-	{
-		CF_Pawn.bIs_Highlightable_Actor = true;
-		CF_Pawn.change_crosshair = true;
-	}
-
 }
 //Rotates object 11.25 degrees when looking at it and pressing the use key
 function bool UsedBy(Pawn User)
@@ -214,4 +193,5 @@ DefaultProperties
 	life=10.0
 	brightness=0.5
 	flicker_light=0
+	is_lit = true
 }

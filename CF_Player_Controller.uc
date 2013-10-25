@@ -18,6 +18,7 @@ var bool lantern_is_being_used;
 var array<CF_Candle_Attributes> candles; 
 var int num_candles;
 var int burn_number;
+var bool bPuzzle1, Puzz1has_first_item, Puzz1has_second_item;
 
 /* Controller needs inventory of candle objects
  * new exec to place candle 
@@ -291,29 +292,6 @@ event Possess(Pawn inPawn, bool bVehicleTransition)
 		}
 		candles.AddItem(start_candle);
 		candles.AddItem(start_candle1);
-
-}
-function Spawn_Block()
-{
-    local CF_Spawnable_Mesh_Test mesh;
-    local Vector mesh_location;
-
-    // position 100 units infront of pawn
-    mesh_location = Pawn.Location + Vector(Pawn.Rotation) * 100.0;
-
-    // spawn a dynamic static mesh actor
-    mesh = Spawn( class'CF_Spawnable_Mesh_Test', , , mesh_location );
-
-    if ( mesh == None ) return;
-
-    // use generic cube mesh, half size
-    //A.StaticMeshComponent.SetStaticMesh( StaticMesh'EngineMeshes.Cube' );
-     mesh.SetDrawScale( 0.5 );
-
-    // drop to floor
-    mesh.SetPhysics( PHYS_None );
-    // set it to self-destruct after 3 seconds
-    mesh.SetTimer( 3.0, false, 'Destroy_Mesh' );
 }
 //Gets the triggers that the player uses
 //Top part is an override of PlayerController class GetTriggerUseList function
@@ -354,8 +332,6 @@ function GetTriggerUseList(float interactDistanceToCheck, float crosshairDist, f
 					Idx = checkTrigger.GeneratedEvents.Length;
 				}
 			}
-          
- 
             //add custom triggers to list of useable triggers
             if (CF_interactable_trigger_test2(checkTrigger) != None && (out_useList.Length == 0 || out_useList[out_useList.Length-1] != checkTrigger))
             {
@@ -396,28 +372,6 @@ function GetTriggerUseList(float interactDistanceToCheck, float crosshairDist, f
 		}
     }
 }
-
-function Log_Call()
-{
-	`log("Hit");
-}
-
-function Open_Test_Movie(CF_SeqAct_Flash_Movie_Test movie)
-{
-	close_crosshair=true;
-	if(test_movie == none)
-	{
-		test_movie = new class'CF_Test_Movie';
-	}
-	test_movie.Init();
-	SetTimer(2,false,'Close_Test_Movie');
-	SetTimer(5,false,'Open_CH_Movie');
-	
-}
-function Close_Test_Movie()
-{
-	test_movie.End();
-}
 function Open_CH_Movie()
 {
 	open_crosshair=true;
@@ -431,4 +385,7 @@ DefaultProperties
 	pausable=true;
 	lantern_is_being_used=false;
 	num_candles=2
+	bPuzzle1=false
+	Puzz1has_first_item=false
+	Puzz1has_second_item=false
 }

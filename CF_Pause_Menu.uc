@@ -8,6 +8,7 @@ All code (c)2013 DangerZone Games inc. all rights reserved
 var bool bIsOpen;
 var GFxObject RootMC;
 var GFxobject candle_text, candle_inventory_1,candle_inventory_2,candle_inventory_3,candle_inventory_4,candle_inventory_5,candle_inventory_6;
+var GFxObject Item_text;
 var Cf_save_info save_info;
 
 //Starts the movie
@@ -41,6 +42,31 @@ function bool Start(optional bool StartPaused = false)
 		{
 			candle_array[i].SetText("Candle"@string(i+1)@"has"@string(int(CF_Controller.candles[i].Life))@"seconds remaing.\n");
 		
+		}
+		Item_Text=GetVariableObject("_root.Item_Text");
+
+		if(CF_Controller.bPuzzle1 == true)
+		{
+			if(CF_Controller.Puzz1has_first_item == true && CF_Controller.Puzz1has_second_item == false)
+			{
+				Item_Text.SetText("You have a screw.\n");
+			}
+			else if(CF_Controller.Puzz1has_first_item == true && CF_Controller.Puzz1has_second_item == true)
+			{
+				Item_Text.SetText("You have a screw.\n You have a nail.");
+			}
+			else if(CF_Controller.Puzz1has_first_item == false && CF_Controller.Puzz1has_second_item == true)
+			{
+				Item_Text.SetText("You have a nail.\n");
+			}
+			else
+			{
+				Item_Text.SetText("Find items to open the gate.\n");
+			}
+		}
+		else
+		{
+
 		}
 		return true;
 }

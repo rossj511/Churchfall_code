@@ -4,9 +4,9 @@ class CF_SeqAct_Test extends SequenceAction;
 event Activated()
 {
 
-local CF_Player_Controller CF_Controller;
-CF_Controller = CF_Player_Controller(GetWorldInfo().GetALocalPlayerController());
-CF_Controller.Log_Call();
+//local CF_Player_Controller CF_Controller;
+//CF_Controller = CF_Player_Controller(GetWorldInfo().GetALocalPlayerController());
+//CF_Controller.Log_Call();
 }
 
 defaultproperties

@@ -21,13 +21,13 @@ event Touch(Actor Other, PrimitiveComponent OtherComp, Vector HitLocation, Vecto
 //Untouch event removes crosshair highlighting
 event UnTouch(Actor Other)
 {
-	local CF_Player_Pawn CF_Pawn;
-	local actor Player_Location_Actor;
+//	local CF_Player_Pawn CF_Pawn;
+//	local actor Player_Location_Actor;
 	super.UnTouch(Other);
-	Player_Location_Actor = GetALocalPlayerController().Pawn;
-    CF_Pawn = CF_Player_Pawn(Player_Location_Actor);
-	CF_Pawn.bIs_Highlightable_Actor = false;
-	CF_Pawn.change_crosshair = false;
+	//Player_Location_Actor = GetALocalPlayerController().Pawn;
+  //  CF_Pawn = CF_Player_Pawn(Player_Location_Actor);
+//	CF_Pawn.bIs_Highlightable_Actor = false;
+	//CF_Pawn.change_crosshair = false;
 	if (Pawn(Other) != none)
 	{
 		PlayerController(Pawn(Other).Controller).myHUD.RemovePostRenderedActor(self);
@@ -55,13 +55,13 @@ simulated event PostRenderFor(PlayerController PC, Canvas Canvas, Vector CameraP
 
 	if(dot_product < 0 && (camera_rotation.Pitch < 3500 || camera_rotation.Pitch > 59000 ))
 	{
-		CF_Pawn.bIs_Highlightable_Actor = true;
-		CF_Pawn.change_crosshair = true;
+		//CF_Pawn.bIs_Highlightable_Actor = true;
+		//CF_Pawn.change_crosshair = true;
 	}
 	else
 	{
-		CF_Pawn.bIs_Highlightable_Actor = false;
-		CF_Pawn.change_crosshair = false;
+		//CF_Pawn.bIs_Highlightable_Actor = false;
+		//CF_Pawn.change_crosshair = false;
 	}
 }
 function bool UsedBy(Pawn User)
