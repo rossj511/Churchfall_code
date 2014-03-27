@@ -13,7 +13,9 @@ var bool play_idle;
 //var AnimSequence OnSpawn;
 //var AnimNodePlayCustomAnim Idle;
 var SpotLightComponent LightAttachment;
+//var DirectionalLightComponent
 var SkeletalMeshComponent LanternComponent;
+var color lanternLightColor;
 // Sets animation node slots so they can be called in unrealscript
 function SetAnimation()
 {
@@ -26,14 +28,17 @@ simulated function PostBeginPlay()
 {
 	SetAnimation();
 	super.PostBeginPlay();
+	lanternLightColor.R = 255;
+	lanternLightColor.G = 255;
+	lanternLightColor.B = 224;
 }
 function CreateLight(float intensity,float radius,CF_Player_Pawn CF_Pawn)
 {
 	LightAttachment = new(self) class 'SpotLightComponent';
-	LightAttachment.SetLightProperties(intensity);
+	LightAttachment.SetLightProperties(intensity,lanternLightColor);
 	LightAttachment.Radius= radius;
-	LightAttachment.InnerConeAngle= 20;
-	LightAttachment.OuterConeAngle= 50;
+	LightAttachment.InnerConeAngle= 10;
+	LightAttachment.OuterConeAngle= 15;
 	LightAttachment.CastDynamicShadows = false;
 	LightAttachment.ShadowFilterQuality = SFQ_High;
 	LightAttachment.ShadowProjectionTechnique = ShadowProjTech_BPCF_High;
@@ -83,4 +88,5 @@ DefaultProperties
     Components.Add(MySkeletalMeshComponent)
 	bPostRenderifNotVisible = true
 	play_idle = false
+
 }

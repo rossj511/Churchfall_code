@@ -1,6 +1,6 @@
-class CF_Journal_Movie extends GFxMoviePlayer;
+class CF_Malachis_Book_Movie extends GFxMoviePlayer;
 var bool bIsOpen;
-var bool pause_item_text_bool;
+var bool triggerEvent;
 //Starts the movie
 function Init(optional LocalPlayer LocPlay)
 {
@@ -14,30 +14,30 @@ function Init(optional LocalPlayer LocPlay)
 //Ends movie
 function End()
 {
+	local CF_Player_Controller CF_Controller;
 	Close();
 	GetPC().SetPause(false);
 	self.ClearFocusIgnoreKeys();
 	bIsOpen = false;
+	CF_Controller = CF_Player_Controller(GetPC());
+	if(triggerEvent==true)
+	{
+		CF_Controller.TriggerEventClass(class'CF_SeqEvent_CloseMalachisDoor',CF_Controller);
+		triggerEvent=false;
+
+	}
 }
 function CloseJournal()
 {
-	`log("Close");
 	End();
-}
-function Entry1()
-{	
-	`log("Play Sound");
-}
-function JournalOpen()
-{
-	`log("Stop all sounds");
 }
 DefaultProperties
 {
-	MovieInfo = SwfMovie'CFLetters.Journal';
+	MovieInfo =SwfMovie'CFItems.CF_Book_Hint';
     bEnableGammaCorrection=false
 	bPauseGameWhileActive=true
 	bIgnoreMouseInput=false
 	bCaptureInput=false
 	bIsOpen=false
+	triggerEvent=false
 }

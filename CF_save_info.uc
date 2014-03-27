@@ -8,6 +8,12 @@ All code (c)2012 DangerZone Games inc. all rights reserved
 */
 
 var int loc_x,loc_y,loc_z;
+var bool bHasLantern;
+var bool bHasMKey;
+var bool bHasScrew1;
+var bool bHasScrew2;
+var array<CF_Darkness_PuzzleActor> solvedPuzzleActors;
+var bool bSolvedDarknessPuzzle;
 var string map_name;
 
 
@@ -42,5 +48,10 @@ defaultproperties
 	loc_x = 0;
 	loc_y = 0;
 	loc_z = 0;
-	map_name = "test"
+	bHasLantern=false
+	bHasMKey=false
+	bHasScrew1=false
+	bHasScrew2=false
+	bSolvedDarknessPuzzle = false
+	map_name = "NAVE_ASSEMBLY_6"
 }

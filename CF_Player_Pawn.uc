@@ -47,6 +47,15 @@ simulated function PostBeginPlay()
 		`log(vec.z@vec.y@vec.z);
 		SetLocation(vec);
 	}
+
+	
+	
+}
+function AdjustSize()
+{
+	`log("Called");
+	self.ConsoleCommand("changesize 50");
+
 }
 //Starts the crosshair movie
 function crosshair_movie_start()
@@ -90,8 +99,9 @@ event Tick(float DeltaTime)
 	    if(CF_Controller.close_crosshair==true)
 		{
 			crosshair_frame.GotoAndStopI(3);
+			
 		}
-		
+		//AdjustSize();
 		
 }
 DefaultProperties
@@ -103,8 +113,17 @@ DefaultProperties
 		bUseBooleanEnvironmentShadowing=false
 	End Object
 	Components.Add(PawnLightEnvironment)
-	bPostRenderifNotVisible = true
+	bPostRenderifNotVisible = True
 	game_start = false
 	bCanJump=false
+	SpawnSound=none
     InventoryManagerClass=class'Churchfall.CF_Inventory_Manager'
+	BaseEyeHeight=150
+    MaxStepHeight=60
+ 
+    begin object name=CollisionCylinder
+        CollisionHeight=90.0
+        CollisionRadius=34.0
+	End Object
+	Components.Add(CollisionCylinder)
 }

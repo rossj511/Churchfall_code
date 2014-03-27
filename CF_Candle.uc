@@ -7,8 +7,9 @@ var() bool is_lit;
 var StaticMeshComponent trigger_mesh;
 var PointLightComponent point_light;
 var float life;
-var float brightness;
+var() float brightness;
 var float flicker_light;
+var bool isLockedToObject;
 
 simulated function PostBeginPlay()
 {
@@ -124,7 +125,10 @@ function bool UsedBy(Pawn User)
 	local vector camera_location;
 	local rotator camera_rotation;
 	used = super.UsedBy(User);
-
+	if(isLockedToObject == true)
+	{
+		return true;
+	}
 	Player_Location_Actor = GetALocalPlayerController().Pawn;
     CF_Pawn = CF_Player_Pawn(Player_Location_Actor);
 	CF_Controller = CF_Player_Controller(CF_Pawn.Controller);
@@ -138,7 +142,7 @@ function bool UsedBy(Pawn User)
 		if(CF_Controller.candles.Length < 6)
 		{
 			new_candle.Life=self.life;
-			new_candle.Brightness=0.1;
+			new_candle.Brightness=0.5;
 			new_candle.is_burning=false;
 			CF_Controller.candles.InsertItem(Cf_COntroller.num_candles,new_candle);
 			CF_Controller.candles[Cf_Controller.num_candles].is_burning=false;
@@ -194,4 +198,5 @@ DefaultProperties
 	brightness=0.5
 	flicker_light=0
 	is_lit = true
+	isLockedToObject=false
 }

@@ -36,7 +36,7 @@ var GFxClikWidget ambient_o, distortion, vsync, directional_maps;
 
 var GFxObject BindingMovie, BindKeyTF, DuplicateMovieTF, DuplicateTitleTF;
 var GFxObject fwd_bind, bwd_bind, lft_bind, rght_bind;
-var GFxObject use_bind;
+var GFxObject use_bind, add_bind, rem_bind;
 var GFxObject journ_bind,flash_bind;
 
 var bool bConfirmChoice, bPendingUnbind;
@@ -425,6 +425,8 @@ function ControlOptionsOpened()
 	use_bind = GetVariableObject("_root.usee_bind");
 	journ_bind = GetVariableObject("_root.j_bind");
 	flash_bind = GetVariableObject("_root.f_bind");
+	add_bind = GetVariableObject("_root.add_bind");
+	rem_bind = GetVariableObject("_root.rem_bind");
 	CF_Input = CF_Player_Input(GetPC().PlayerInput);
 	load_options_save_info();
 }
@@ -441,6 +443,8 @@ local int i, BindingIdx;
 	use_bind = GetVariableObject("_root.usee_bind");
 	flash_bind = GetVariableObject("_root.f_bind");
 	journ_bind = GetVariableObject("_root.j_bind");
+	add_bind = GetVariableObject("_root.add_bind");
+	rem_bind = GetVariableObject("_root.rem_bind");
 	CF_Input = CF_Player_Input(GetPC().PlayerInput);
 	if(CF_Input==none)
 	{
@@ -464,7 +468,7 @@ local int i, BindingIdx;
 		if(Binded[i].Command == "GBA_journal" || Binded[i].Command == "GBA_flashlight" 
 		|| Binded[i].Command == "GBA_MoveForward" || Binded[i].Command == "GBA_Backward" || Binded[i].Command == "GBA_StrafeLeft" 
 		|| Binded[i].Command == "GBA_StrafeRight" 
-		|| Binded[i].Command == "GBA_Use" )
+		|| Binded[i].Command == "GBA_Use" || Binded[i].Command == "GBA_AddC"|| Binded[i].Command == "GBA_RemoveC")
 		{
 		//loops through the binded list and finds the bind value associated to the name
 			for(BindingIdx=0; BindingIdx<CF_Input.Bindings.Length; BindingIdx++)
@@ -473,6 +477,284 @@ local int i, BindingIdx;
 				{
 						GBA_BindValue = String(CF_Input.Bindings[BindingIdx].Name);
 						//all values have to be checked for individually due to certain characters not existing in the font
+						if(Binded[i].Command == "GBA_AddC")
+						{
+							if(GBA_BindValue == "F1")
+							{
+								add_bind.SetText("F One");
+							}
+							else if(GBA_BindValue == "F2")
+							{
+								add_bind.SetText("F Two");
+							}
+							else if(GBA_BindValue == "F3")
+							{
+								add_bind.SetText("F Three");
+							}
+							else if(GBA_BindValue == "F4")
+							{
+								add_bind.SetText("F Four");
+							}
+							else if(GBA_BindValue == "F5")
+							{
+								add_bind.SetText("F Five");
+							}
+							else if(GBA_BindValue == "F6")
+							{
+								add_bind.SetText("F Six");
+							}
+							else if(GBA_BindValue == "F7")
+							{
+								add_bind.SetText("F Seven");
+							}
+							else if(GBA_BindValue == "F8")
+							{
+								add_bind.SetText("F Eight");
+							}
+							else if(GBA_BindValue == "F9")
+							{
+								add_bind.SetText("F Nine");
+							}
+							else if(GBA_BindValue == "F10")
+							{
+								add_bind.SetText("F Ten");
+							}
+							else if(GBA_BindValue == "F12")
+							{
+								add_bind.SetText("F Twelve");
+							}
+							else if(GBA_BindValue == "one")
+							{
+								add_bind.SetText("One");
+							}
+							else if(GBA_BindValue == "two")
+							{
+								add_bind.SetText("Two");
+							}
+							else if(GBA_BindValue == "three")
+							{
+								add_bind.SetText("Three");
+							}
+							else if(GBA_BindValue == "four")
+							{
+								add_bind.SetText("Four");
+							}
+							else if(GBA_BindValue == "five")
+							{
+								add_bind.SetText("Five");
+							}
+							else if(GBA_BindValue == "six")
+							{
+								add_bind.SetText("Six");
+							}
+							else if(GBA_BindValue == "seven")
+							{
+								add_bind.SetText("Seven");
+							}
+							else if(GBA_BindValue == "eight")
+							{
+								add_bind.SetText("Eight");
+							}
+							else if(GBA_BindValue == "nine")
+							{
+								add_bind.SetText("Nine");
+							}
+							else if(GBA_BindValue == "zero")
+							{
+								add_bind.SetText("Zero");
+							}
+							else if(GBA_BindValue == "LeftMouseButton")
+							{
+								add_bind.SetText("Left Mouse");
+							}
+							else if(GBA_BindValue == "RightMouseButton")
+							{
+								add_bind.SetText("Right Mouse");
+							}
+							else if(GBA_BindValue == "SpaceBar")
+							{
+								add_bind.SetText("Space Bar");
+							}
+							else if(GBA_BindValue == "LeftControl")
+							{
+								add_bind.SetText("Left Control");
+							}
+							else if(GBA_BindValue == "RightControl")
+							{
+								add_bind.SetText("Right Control");
+							}
+							else if(GBA_BindValue == "LeftBracket")
+							{
+								add_bind.SetText("Left Bracket");
+							}
+							else if(GBA_BindValue == "RightBracket")
+							{
+								add_bind.SetText("Right Bracket");
+							}
+							else if(GBA_BindValue == "CapsLock")
+							{
+								add_bind.SetText("Caps Lock");
+							}
+							else if(GBA_BindValue == "LeftShift")
+							{
+								add_bind.SetText("Left Shift");
+							}
+							else if(GBA_BindValue == "RightShift")
+							{
+								add_bind.SetText("Right Shift");
+							}
+							else if(GBA_BindValue == "LeftAlt")
+							{
+								add_bind.SetText("Left Alt");
+							}
+							else if(GBA_BindValue == "RightAlt")
+							{
+								add_bind.SetText("Right Alt");
+							}
+							else
+							{
+							add_bind.SetText(GBA_BindValue);
+							}
+						}
+						if(Binded[i].Command == "GBA_RemoveC")
+						{
+							if(GBA_BindValue == "F1")
+							{
+								rem_bind.SetText("F One");
+							}
+							else if(GBA_BindValue == "F2")
+							{
+								rem_bind.SetText("F Two");
+							}
+							else if(GBA_BindValue == "F3")
+							{
+								rem_bind.SetText("F Three");
+							}
+							else if(GBA_BindValue == "F4")
+							{
+								rem_bind.SetText("F Four");
+							}
+							else if(GBA_BindValue == "F5")
+							{
+								rem_bind.SetText("F Five");
+							}
+							else if(GBA_BindValue == "F6")
+							{
+								rem_bind.SetText("F Six");
+							}
+							else if(GBA_BindValue == "F7")
+							{
+								rem_bind.SetText("F Seven");
+							}
+							else if(GBA_BindValue == "F8")
+							{
+								rem_bind.SetText("F Eight");
+							}
+							else if(GBA_BindValue == "F9")
+							{
+								rem_bind.SetText("F Nine");
+							}
+							else if(GBA_BindValue == "F10")
+							{
+								rem_bind.SetText("F Ten");
+							}
+							else if(GBA_BindValue == "F12")
+							{
+								rem_bind.SetText("F Twelve");
+							}
+							else if(GBA_BindValue == "one")
+							{
+								rem_bind.SetText("One");
+							}
+							else if(GBA_BindValue == "two")
+							{
+								rem_bind.SetText("Two");
+							}
+							else if(GBA_BindValue == "three")
+							{
+								rem_bind.SetText("Three");
+							}
+							else if(GBA_BindValue == "four")
+							{
+								rem_bind.SetText("Four");
+							}
+							else if(GBA_BindValue == "five")
+							{
+								rem_bind.SetText("Five");
+							}
+							else if(GBA_BindValue == "six")
+							{
+								rem_bind.SetText("Six");
+							}
+							else if(GBA_BindValue == "seven")
+							{
+								rem_bind.SetText("Seven");
+							}
+							else if(GBA_BindValue == "eight")
+							{
+								rem_bind.SetText("Eight");
+							}
+							else if(GBA_BindValue == "nine")
+							{
+								rem_bind.SetText("Nine");
+							}
+							else if(GBA_BindValue == "zero")
+							{
+								rem_bind.SetText("Zero");
+							}
+							else if(GBA_BindValue == "LeftMouseButton")
+							{
+								rem_bind.SetText("Left Mouse");
+							}
+							else if(GBA_BindValue == "RightMouseButton")
+							{
+								rem_bind.SetText("Right Mouse");
+							}
+							else if(GBA_BindValue == "SpaceBar")
+							{
+								rem_bind.SetText("Space Bar");
+							}
+							else if(GBA_BindValue == "LeftControl")
+							{
+								rem_bind.SetText("Left Control");
+							}
+							else if(GBA_BindValue == "RightControl")
+							{
+								rem_bind.SetText("Right Control");
+							}
+							else if(GBA_BindValue == "LeftBracket")
+							{
+								rem_bind.SetText("Left Bracket");
+							}
+							else if(GBA_BindValue == "RightBracket")
+							{
+								rem_bind.SetText("Right Bracket");
+							}
+							else if(GBA_BindValue == "CapsLock")
+							{
+								rem_bind.SetText("Caps Lock");
+							}
+							else if(GBA_BindValue == "LeftShift")
+							{
+								rem_bind.SetText("Left Shift");
+							}
+							else if(GBA_BindValue == "RightShift")
+							{
+								rem_bind.SetText("Right Shift");
+							}
+							else if(GBA_BindValue == "LeftAlt")
+							{
+								rem_bind.SetText("Left Alt");
+							}
+							else if(GBA_BindValue == "RightAlt")
+							{
+								rem_bind.SetText("Right Alt");
+							}
+							else
+							{
+							rem_bind.SetText(GBA_BindValue);
+							}
+						}
 						if(Binded[i].Command == "GBA_journal")
 						{
 							if(GBA_BindValue == "F1")
@@ -1506,9 +1788,16 @@ function OpenBindKeyMovie(string bind_name)
 	}
 	else if(bind_name == "GBA_journal")
 	{
-		bind_name = "Journal";
+		bind_name = "Drop Candle";
 	}
-
+	else if(bind_name == "GBA_AddC")
+	{
+		bind_name = "Add Candle";
+	}
+	else if(bind_name == "GBA_RemoveC")
+	{
+		bind_name = "Remove Candle";
+	}
 	BindKeyTF.SetText("Press The Key\n you want to use for\n" $ bind_name);
 	bCaptureForBind=true;
 }
@@ -2237,6 +2526,14 @@ function BindFieldClick(string clicked_item)
 	{
 		OpenBindKeyMovie("GBA_flashlight");
 	}
+	else if(clicked_item == "add_bind")
+	{
+		OpenBindKeyMovie("GBA_AddC");
+	}
+	else if(clicked_item == "rem_bind")
+	{
+		OpenBindKeyMovie("GBA_RemoveC");
+	}
 }
 function AttackClik()
 {
@@ -2305,10 +2602,20 @@ function FlashlightClik()
 	OpenBindKeyMovie("GBA_flashlight");
 	UpdateDataProvider();
 }
+function AddClik()
+{
+	OpenBindKeyMovie("GBA_AddC");
+	UpdateDataProvider();
+}
+function RemoveClik()
+{
+	OpenBindKeyMovie("GBA_RemoveC");
+	UpdateDataProvider();
+}
 //Starts game
 function Play_game()
 {
-	ConsoleCommand("open test_dark");
+	ConsoleCommand("open TestCrap");
 }
 //Quits game
 function Quit_game()
@@ -2318,7 +2625,7 @@ function Quit_game()
 DefaultProperties
 {
 	bDisplayWithHudOff=true
-	MovieInfo=SwfMovie'CFMenu.CF_Main_Menu'
+	MovieInfo=SwfMovie'CFMenu.CF_Main_Menu_Two'
 	bCaptureInput=true;
 	
 	WidgetBindings(0) ={(WidgetName="master_v",WidgetClass = class'GFxClikWidget')}

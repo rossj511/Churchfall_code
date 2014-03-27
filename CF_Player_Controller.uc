@@ -29,41 +29,46 @@ var bool bPuzzle1, Puzz1has_first_item, Puzz1has_second_item;
 exec function int LanternToggle()
 {
 	local CF_Player_Pawn CF_Pawn;
+	local WorldInfo CFGameInfo; //this will represent the gameinfo class
+	local CF_Gametype CFGameType; //this represents the desired gametype
+	CFGameInfo = class'WorldInfo'.static.GetWorldInfo();
+	CFGameType = CF_Gametype(CFGameInfo.Game);
 	CF_Pawn =CF_Player_Pawn(self.Pawn);
-
-	if(lantern == none && lantern_is_being_used == false)
+	if(CFGameType.bHasLantern == true)
 	{
-		lantern = Spawn(class'CF_Lantern');
-		CF_Pawn.InvManager.addInventory(lantern);
-		CF_Pawn.InvManager.bMustHoldWeapon = true;
-		CF_Pawn.InvManager.SetCurrentWeapon(lantern);
-			if(lantern!=none)
-			{
-				lantern.GiveTo(CF_Pawn);
-			}
-		lantern.CreateLight(0.0,4200.0,CF_Pawn);
-		lantern.SetHidden(false);
-		lantern.LanternComponent.PlayAnim('WeaponEquip');
-		lantern_is_being_used = true;
-		lantern.LightAttachment.SetEnabled(false);
-		return 1;
+		if(lantern == none && lantern_is_being_used == false)
+		{
+			lantern = Spawn(class'CF_Lantern');
+			CF_Pawn.InvManager.addInventory(lantern);
+			CF_Pawn.InvManager.bMustHoldWeapon = true;
+			CF_Pawn.InvManager.SetCurrentWeapon(lantern);
+				if(lantern!=none)
+				{
+					lantern.GiveTo(CF_Pawn);
+				}
+			lantern.CreateLight(0.0,500.0,CF_Pawn);
+			lantern.SetHidden(false);
+			lantern.LanternComponent.PlayAnim('WeaponEquip');
+			lantern_is_being_used = true;
+			lantern.LightAttachment.SetEnabled(false);
+			return 1;
+		}
+		else if(lantern!=none && lantern_is_being_used == false)
+		{
+			lantern.SetHidden(false);
+			lantern.LanternComponent.PlayAnim('WeaponEquip');
+			lantern_is_being_used = true;
+			lantern.LightAttachment.SetEnabled(true);
+			return 1;
+		}
+		else if(lantern!=none && lantern_is_being_used == true)
+		{
+			lantern.LanternComponent.PlayAnim('WeaponPutDown');
+			lantern_is_being_used = false;
+			lantern.DisableLight();
+			return 1;
+		}
 	}
-	else if(lantern!=none && lantern_is_being_used == false)
-	{
-		lantern.SetHidden(false);
-		lantern.LanternComponent.PlayAnim('WeaponEquip');
-		lantern_is_being_used = true;
-		lantern.LightAttachment.SetEnabled(true);
-		return 1;
-	}
-	else if(lantern!=none && lantern_is_being_used == true)
-	{
-		lantern.LanternComponent.PlayAnim('WeaponPutDown');
-		lantern_is_being_used = false;
-		lantern.DisableLight();
-		return 1;
-	}
-	
 }
 
 exec function int addCandle()
@@ -94,7 +99,7 @@ exec function int addCandle()
 			}
 			return 1;
 		}
-		else if(lantern.LightAttachment.Brightness <= 0.6)
+		else if(lantern.LightAttachment.Brightness <= 3)
 		{
 
 			if(candles[num_candles-1].is_burning == false)
@@ -160,7 +165,7 @@ exec function int removeCandle(optional bool fromPawn)
 	else 
 		return 0;
 }
-exec function Journal()
+/*exec function Journal()
 {
 	`log("journal");
 	if(CF_HUD(self.myHUD).use_journal== true)
@@ -182,7 +187,7 @@ exec function Journal()
 		journal_movie = new class'CF_Journal_Movie';
 	}
 	}
-}
+}*/
 exec function spawnCandle()
 {
 local Actor Collider;
@@ -195,7 +200,6 @@ loc = self.Pawn.Location + Vector(self.Pawn.Rotation)*150;
 	{
 		foreach CollidingActors(class'Actor',Collider,40,loc)
 		{
-			`log("Collision");
 			break;
 		}
 		if(Collider==none)
@@ -369,6 +373,18 @@ function GetTriggerUseList(float interactDistanceToCheck, float crosshairDist, f
             {
                 out_useList[out_useList.Length] = checkTrigger;
             }
+			if (CF_MalachisBook(checkTrigger) != None && (out_useList.Length == 0 || out_useList[out_useList.Length-1] != checkTrigger))
+            {
+                out_useList[out_useList.Length] = checkTrigger;
+            }
+			if (CF_screw1(checkTrigger) != None && (out_useList.Length == 0 || out_useList[out_useList.Length-1] != checkTrigger))
+            {
+                out_useList[out_useList.Length] = checkTrigger;
+            }
+			if (CF_screw2(checkTrigger) != None && (out_useList.Length == 0 || out_useList[out_useList.Length-1] != checkTrigger))
+            {
+                out_useList[out_useList.Length] = checkTrigger;
+            }
 		}
     }
 }
@@ -376,6 +392,7 @@ function Open_CH_Movie()
 {
 	open_crosshair=true;
 	close_crosshair=false;
+
 }
 DefaultProperties
 {

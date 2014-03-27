@@ -5,7 +5,12 @@ DangerZone Games: James Ross (jross.rpi@gmail.com)
 Date : 09/08/2013
 All code (c)2013 DangerZone Games inc. all rights reserved
 */  
-
+var bool bHasLantern;
+var bool bHasMKey;
+var bool bHasScrew1;
+var bool bHasScrew2;
+var array<CF_Darkness_PuzzleActor> solvedPuzzleActors;
+var bool bSolvedDarknessPuzzle;
 //Initial call
 event PostLogin( PlayerController CF_PC )
 { 
@@ -33,12 +38,23 @@ event PostLogin( PlayerController CF_PC )
 			vec.y = save_info.loc_y;
 			vec.z = save_info.loc_z;
 			CF_Pawn.SetLocation(vec);
+			bHasLantern = save_info.bHasLantern;
+			bHasMKey = save_info.bHasMKey;
+			bHasScrew1= save_info.bHasScrew1;
+			bHasScrew2 = save_info.bHasScrew2;
+			solvedPuzzleActors = save_info.solvedPuzzleActors;
+			bSolvedDarknessPuzzle = save_info.bSolvedDarknessPuzzle;
+
 		}
+	self.GetALocalPlayerController().ConsoleCommand("Scale Set DynamicShadows true");
+	self.GetALocalPlayerController().ConsoleCommand("Scale Set DynamicLights true");
 }
+
 //After play begins
 event PostBeginPlay()
 {
 	super.PostBeginPlay();
+
 }
 //Beginning of game
 simulated function StartMatch()
@@ -57,4 +73,9 @@ DefaultProperties
 	DefaultPawnClass=class'Churchfall.CF_Player_Pawn'
     HUDType=class'Churchfall.CF_HUD'
     bDelayedStart=false
+	bHasLantern = false
+	bHasMKey = false
+	bHasScrew1=false
+	bHasScrew2=false
+	bSolvedDarknessPuzzle = false
 }
