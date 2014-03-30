@@ -12,5 +12,5 @@ defaultproperties
 	ObjName="ToggleMalachisDoor"
 	ObjCategory="Churchfall Actions"
 	bCallHandler=false
-	VariableLinks(0)=(ExpectedType=class'SeqVar_Object',LinkDesc="Malachi",PropertyName=MalachisDoor)
+	VariableLinks(0)=(ExpectedType=class'SeqVar_Object',LinkDesc="Malachi's Door",PropertyName=MalachisDoor)
 }

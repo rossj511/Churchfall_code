@@ -120,7 +120,7 @@ function save_game_info()
 	Player_Location_Actor = GetPC().Pawn;
     CF_pawn = Cf_Player_Pawn(Player_Location_Actor);
 	save_info = class'CF_save_info'.static.load_options();
-	candle_text.SetText("You have candles.");
+	candle_text.SetText("Game Saved");
 	if(save_info == none)
 	{
 		save_info = new class'CF_save_info';
@@ -135,6 +135,7 @@ function save_game_info()
 	save_info.bHasScrew2 = CFGameType.bHasScrew2;
 	save_info.solvedPuzzleActors = CFGameType.solvedPuzzleActors;
 	save_info.bSolvedDarknessPuzzle = CFGameType.bSolvedDarknessPuzzle;
+	save_info.malachiIndexCount = CFGameType.malachiIndexCount;
 	save_info.save_game();
 }
 DefaultProperties

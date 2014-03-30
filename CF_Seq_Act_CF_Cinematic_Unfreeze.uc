@@ -9,7 +9,8 @@ event Activated()
 	CF_Pawn = CF_Player_Pawn(CF_Controller.Pawn);
 	CF_Controller.IgnoreMoveInput(false);
 	CF_Controller.IgnoreLookInput(false);
-	CF_Pawn.crosshair_movie.Init();
+	CF_Pawn.crosshair_movie_start();
+
 }
 
 defaultproperties

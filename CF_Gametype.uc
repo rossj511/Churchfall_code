@@ -11,6 +11,8 @@ var bool bHasScrew1;
 var bool bHasScrew2;
 var array<CF_Darkness_PuzzleActor> solvedPuzzleActors;
 var bool bSolvedDarknessPuzzle;
+var int malachiIndexCount;
+var CF_DialogClass dClass;
 //Initial call
 event PostLogin( PlayerController CF_PC )
 { 
@@ -19,7 +21,11 @@ event PostLogin( PlayerController CF_PC )
     local CF_Player_Pawn CF_pawn;
 	local CF_save_info save_info;
 	local vector vec;
+	local name sName;
 	super.PostLogin( CF_PC );
+	sName=class'Engine'.static.GetSubtitleFont().Name;
+	`log(sName);
+	dClass = new class 'Churchfall.CF_DialogClass';
 	Player_Location_Actor = GetALocalPlayerController().Pawn;
 	CF_pawn = CF_Player_Pawn(Player_Location_Actor);
 	url = WorldInfo.GetLocalURL();
@@ -44,6 +50,7 @@ event PostLogin( PlayerController CF_PC )
 			bHasScrew2 = save_info.bHasScrew2;
 			solvedPuzzleActors = save_info.solvedPuzzleActors;
 			bSolvedDarknessPuzzle = save_info.bSolvedDarknessPuzzle;
+			malachiIndexCount = save_info.malachiIndexCount;
 
 		}
 	self.GetALocalPlayerController().ConsoleCommand("Scale Set DynamicShadows true");
@@ -78,4 +85,5 @@ DefaultProperties
 	bHasScrew1=false
 	bHasScrew2=false
 	bSolvedDarknessPuzzle = false
+	malachiIndexCount=0;
 }

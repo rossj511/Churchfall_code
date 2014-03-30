@@ -15,6 +15,7 @@ var bool bHasScrew2;
 var array<CF_Darkness_PuzzleActor> solvedPuzzleActors;
 var bool bSolvedDarknessPuzzle;
 var string map_name;
+var int malachiIndexCount;
 
 
 function bool save_game()
@@ -53,5 +54,6 @@ defaultproperties
 	bHasScrew1=false
 	bHasScrew2=false
 	bSolvedDarknessPuzzle = false
+	malachiIndexCount=0;
 	map_name = "NAVE_ASSEMBLY_6"
 }

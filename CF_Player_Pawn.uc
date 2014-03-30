@@ -47,10 +47,22 @@ simulated function PostBeginPlay()
 		`log(vec.z@vec.y@vec.z);
 		SetLocation(vec);
 	}
+	
 
 	
 	
 }
+function PlayTeleportEffect(bool bOut, bool bSound)
+{
+	bSound=false;
+	bout=false;
+	Super.PlayTeleportEffect( bOut, bSound );
+}
+function SpawnTransEffect(int TeamNum)
+{
+
+}
+
 function AdjustSize()
 {
 	`log("Called");
@@ -116,14 +128,14 @@ DefaultProperties
 	bPostRenderifNotVisible = True
 	game_start = false
 	bCanJump=false
-	SpawnSound=none
+	SpawnSound=SoundCue'CFAudio2.SC_Silence'
     InventoryManagerClass=class'Churchfall.CF_Inventory_Manager'
 	BaseEyeHeight=150
     MaxStepHeight=60
- 
     begin object name=CollisionCylinder
         CollisionHeight=90.0
         CollisionRadius=34.0
 	End Object
 	Components.Add(CollisionCylinder)
+	GroundSpeed=200.00
 }

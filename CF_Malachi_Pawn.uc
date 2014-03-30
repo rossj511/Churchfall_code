@@ -1,17 +1,24 @@
 class CF_Malachi_Pawn extends UDKPawn
-placeable;
-
-var() array<Actor> Targets;
-var() array<Actor> finalDestination;
-var() int finalDestinationIndex;
-var() Actor targetAA;
+placeable
+	ClassGroup(CF_Actors);
+var skeletalmeshcomponent MalachiAnim;
+function SetAnimation()
+{
+	if (self.Mesh!=none)
+    {          
+		MalachiAnim=self.Mesh;
+    }
+}
 event PostBeginPlay()
 {
-    super.PostBeginPlay();
+	SetAnimation();
+    super.PostBeginPlay();	
+	self.MalachiAnim.PlayAnim('MalachiPrayerIdle');
 }
-
 DefaultProperties
 {
+	Begin Object class=AnimNodeSequence Name=spawnsequence
+	End Object
 		// Create a light environment for the pawn
 	Begin Object Class=DynamicLightEnvironmentComponent Name=PawnLightEnvironment
 		bSynthesizeSHLight=true
@@ -30,18 +37,21 @@ DefaultProperties
 	End Object
 	Components.Add(CollisionCylinder)
 	 Begin Object Class=SkeletalMeshComponent Name=MalachiPawnSkeletalMesh
-        SkeletalMesh=SkeletalMesh'frmalachitemp.Meshes.Priest_L2'
-       // AnimSets(0)=AnimSet'CH_AnimHuman.Anims.K_AnimHuman_BaseMale'
-       // AnimTreeTemplate=AnimTree'SandboxContent.Animations.AT_CH_Human'
+        SkeletalMesh=SkeletalMesh'PenIsland69TeeHee.MalachiModel'
+       AnimSets(0)=AnimSet'PenIsland69TeeHee.MalachiPrayerIdle'
+		AnimSets(1)=AnimSet'PenIsland69TeeHee.MalachiStandingToPrayer'
+		AnimSets(2)=AnimSet'PenIsland69TeeHee.MalachiStartWalk'
+		AnimSets(3)=AnimSet'PenIsland69TeeHee.MalachiWalkLoop'
+		AnimSets(4)=AnimSet'PenIsland69TeeHee.MalachiEndWalk'
+		Animations=spawnsequence
+       //AnimTreeTemplate=AnimTree'PenIsland69TeeHee.MalachiAnimTree'
         HiddenGame=FALSE
         HiddenEditor=FALSE
     End Object
- 
+	//Animations=spawnsequence
+	//MalachiAnim=MalachiPawnSkeletalMesh
     Mesh=MalachiPawnSkeletalMesh
     Components.Add(MalachiPawnSkeletalMesh)
-    ControllerClass=class'Churchfall.CF_AICTEST'
- 
-   
- 
-    GroundSpeed=200.0 //Making the bot slower than the player
+    ControllerClass=class'Churchfall.CF_MalachiAI'
+    GroundSpeed=200.0 
 }

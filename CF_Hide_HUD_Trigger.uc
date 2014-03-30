@@ -1,4 +1,5 @@
-class CF_Hide_HUD_Trigger extends Trigger;
+class CF_Hide_HUD_Trigger extends Trigger
+	ClassGroup(CF_Actors);
 var bool IsInInteractionRange;
 var() const editconst DynamicLightEnvironmentComponent LightEnvironment;
 var() int timer;

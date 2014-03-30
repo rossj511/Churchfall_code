@@ -10,7 +10,7 @@ var float life;
 var() float brightness;
 var float flicker_light;
 var bool isLockedToObject;
-
+var SoundCue candle;
 simulated function PostBeginPlay()
 {
 	super.PostBeginPlay();
@@ -94,6 +94,12 @@ event Touch(Actor Other, PrimitiveComponent OtherComp, Vector HitLocation, Vecto
 		PlayerController(Pawn(Other).Controller).myHUD.AddPostRenderedActor(self);
 		IsInInteractionRange = true;
 	}
+	if(Other.Tag == 'StaticMeshActor')
+	{
+		self.WorldInfo.Game.Broadcast(self,"Hit");
+		self.PlaySound(candle);
+	
+	}
 }
 //Untouch event removes crosshair highlighting
 event UnTouch(Actor Other)
@@ -165,10 +171,10 @@ DefaultProperties
     End Object
 	
     Begin Object Name=CollisionCylinder
-       CollisionHeight=10.000000
-       CollisionRadius=30.00000
+       CollisionHeight=20.000000
+       CollisionRadius=60.00000
     End Object
-    CylinderComponent=CollisionCylinder
+
 
 	Begin Object Class=DynamicLightEnvironmentComponent Name=MyLightEnvironment
 		bSynthesizeSHLight=true
@@ -199,4 +205,5 @@ DefaultProperties
 	flicker_light=0
 	is_lit = true
 	isLockedToObject=false
+	candle = Soundcue'CFAudio.SC_Candle'
 }

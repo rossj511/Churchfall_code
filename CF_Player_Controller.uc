@@ -69,6 +69,7 @@ exec function int LanternToggle()
 			return 1;
 		}
 	}
+	return 0;
 }
 
 exec function int addCandle()
@@ -204,7 +205,9 @@ loc = self.Pawn.Location + Vector(self.Pawn.Rotation)*150;
 		}
 		if(Collider==none)
 		{
+			loc.Z = self.Pawn.Location.Z-80;
 			spawn_candle = Spawn(class'CF_Candle',,,loc);
+			spawn_candle.playsound(spawn_candle.candle);
 			spawn_candle.life=candles[num_candles-1].Life;
 			spawn_candle.brightness=candles[num_candles-1].Brightness;
 			spawn_candle.bPostRenderIfNotVisible=true;

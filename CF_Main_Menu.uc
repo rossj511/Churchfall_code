@@ -56,10 +56,16 @@ function Init(optional LocalPlayer LocPlay)
 	Advance(0.f);
 	SetViewScaleMode(SM_ExactFit);
 	CF_Input = CF_Player_Input(GetPC().PlayerInput);
+	options_save_info = new class'CF_options_save_info';
 }
 //Load saved options
 function load_options_save_info()
 {
+	//options_save_info = class'CF_options_save_info'.static.load_options();
+	/*if(options_save_info == none)
+	{
+		options_save_info = new class'CF_options_save_info';
+	}*/
 	options_save_info = class'CF_options_save_info'.static.load_options();
 	if(options_save_info == none)
 	{
@@ -2615,7 +2621,7 @@ function RemoveClik()
 //Starts game
 function Play_game()
 {
-	ConsoleCommand("open TestCrap");
+	ConsoleCommand("open s");
 }
 //Quits game
 function Quit_game()
@@ -2627,7 +2633,6 @@ DefaultProperties
 	bDisplayWithHudOff=true
 	MovieInfo=SwfMovie'CFMenu.CF_Main_Menu_Two'
 	bCaptureInput=true;
-	
 	WidgetBindings(0) ={(WidgetName="master_v",WidgetClass = class'GFxClikWidget')}
 	WidgetBindings(1) ={(WidgetName="res",WidgetClass = class'GFxClikWidget')}
 	WidgetBindings(2) ={(WidgetName="bright_l",WidgetClass = class'GFxClikWidget')}
